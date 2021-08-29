@@ -1,14 +1,3 @@
-let calc = {
-  prevNum: 0,
-  currentNum: 0,
-  operation: null,
-  result: 0,
-};
-
-console.log(calc.operation);
-
-let calcInOperation = false;
-
 const result = document.getElementById("result");
 const history = document.getElementById("history");
 
@@ -32,74 +21,129 @@ const button_dot = document.getElementById("button_dot");
 const button_equals = document.getElementById("button_equals");
 const button_clear = document.getElementById("button_clear");
 
-// Returns current result as Float
-const retrieveResultAsFloat = () => {
-  return parseFloat(result.value);
+const logz = document.getElementById("logz");
+
+const ADD = "ADD";
+const SUBTRACT = "SUBTRACT";
+const MULTIPLY = "MULTIPLY";
+const DIVIDE = "DIVIDE";
+
+let calc = {
+  currentNum: null,
+  prevNum: null,
+  result: 0,
+  operation: null,
+  operationText: "",
 };
 
-// Updates result history text input
-const inputHandler = (num = "") => {
+const historyHandler = (textlength = "full") => {
+  // History Types
+  // textlength = "full"  *** ${calc.prevNum} + ${calc.currentNum} =
+  // textlength = "short *** ${calc.prevNum} +
+
+  if (calc.operation) {
+    if (calc.result === 0 || textlength === "short") {
+      history.value = `${calc.prevNum} ${calc.operationText} `;
+    } else if (textlength === "full") {
+      history.value = `${calc.prevNum} ${calc.operationText} ${calc.currentNum} =`;
+    }
+  }
+};
+
+// TODO: Configure Regex to ensure only one decimal place can be added.
+const numberHandler = (num) => {
   if (result.value === "0") {
     result.value = num;
   } else {
     result.value = result.value + num;
   }
-  currentNumber = retrieveResultAsFloat();
-};
 
-// Updates calc history text input
-const historyHandler = () => {};
-
-// Resets UI and Calc object
-const resetResult = () => {
-  calc.prevNum = 0;
-  calc.currentNum = 0;
-  calc.operation = null;
-  calc.result = 0;
-
-  result.value = 0;
-  history.value = "";
-};
-
-const calculateAdd = () => {
-  if (!calc.operation) {
-    console.log("Lets do this");
-
-    calc.operation = "ADD";
+  calc.currentNum = parseFloat(result.value);
+  if (calc.result === 0) {
+    historyHandler("short");
   }
 };
 
-/* const calculateSubtract = (num1, num2) => {
-  return num1 - num2;
+const operationHandler = (operation) => {
+  switch (operation) {
+    case ADD:
+      calc.operation = ADD;
+      calc.operationText = "+";
+      break;
+    case SUBTRACT:
+      calc.operation = SUBTRACT;
+      calc.operationText = "-";
+      break;
+    case DIVIDE:
+      calc.operation = DIVIDE;
+      calc.operationText = "/";
+      break;
+    case MULTIPLY:
+      calc.operation = MULTIPLY;
+      calc.operationText = "x";
+      break;
+  }
+
+  result.value = 0;
+  if (calc.result === 0) {
+    calc.prevNum = calc.currentNum;
+    historyHandler("full");
+  } else {
+    historyHandler("short");
+  }
 };
-*/
 
-/*
-const calculateDivide = (num1, num2) => {
-  return num1 / num2;
+const calculateHandler = () => {
+  if (calc.operation === ADD) {
+    calc.result = calc.prevNum + calc.currentNum;
+  } else if (calc.operation === SUBTRACT) {
+    calc.result = calc.prevNum - calc.currentNum;
+  } else if (calc.operation === DIVIDE) {
+    calc.result = calc.prevNum / calc.currentNum;
+  } else if (calc.operation === MULTIPLY) {
+    calc.result = calc.prevNum * calc.currentNum;
+  } else {
+    return;
+  }
+
+  result.value = calc.result;
+
+  historyHandler("full");
+  calc.prevNum = calc.result;
 };
-*/
 
-/*
-const calculateMultiply = (num1, num2) => {
-  return num1 * num2;
+const clearHandler = () => {
+  result.value = 0;
+  calc.result = 0;
+  calc.operation = null;
+  calc.currentNum = null;
+  calc.prevNum = null;
+  history.value = "";
 };
-*/
 
-button_0.addEventListener("click", inputHandler.bind(this, "0"));
-button_1.addEventListener("click", inputHandler.bind(this, "1"));
-button_2.addEventListener("click", inputHandler.bind(this, "2"));
-button_3.addEventListener("click", inputHandler.bind(this, "3"));
-button_4.addEventListener("click", inputHandler.bind(this, "4"));
-button_5.addEventListener("click", inputHandler.bind(this, "5"));
-button_6.addEventListener("click", inputHandler.bind(this, "6"));
-button_7.addEventListener("click", inputHandler.bind(this, "7"));
-button_8.addEventListener("click", inputHandler.bind(this, "8"));
-button_9.addEventListener("click", inputHandler.bind(this, "9"));
-button_clear.addEventListener("click", resetResult);
-button_add.addEventListener("click", calculateAdd);
+button_0.addEventListener("click", numberHandler.bind(this, 0));
+button_1.addEventListener("click", numberHandler.bind(this, 1));
+button_2.addEventListener("click", numberHandler.bind(this, 2));
+button_3.addEventListener("click", numberHandler.bind(this, 3));
+button_4.addEventListener("click", numberHandler.bind(this, 4));
+button_5.addEventListener("click", numberHandler.bind(this, 5));
+button_6.addEventListener("click", numberHandler.bind(this, 6));
+button_7.addEventListener("click", numberHandler.bind(this, 7));
+button_8.addEventListener("click", numberHandler.bind(this, 8));
+button_9.addEventListener("click", numberHandler.bind(this, 9));
 
-//button_divide.addEventListener
-//button_multiply.addEventListener
-//button_subtract.addEventListener
-//
+button_add.addEventListener("click", operationHandler.bind(this, ADD));
+button_subtract.addEventListener(
+  "click",
+  operationHandler.bind(this, SUBTRACT)
+);
+button_divide.addEventListener("click", operationHandler.bind(this, DIVIDE));
+button_multiply.addEventListener(
+  "click",
+  operationHandler.bind(this, MULTIPLY)
+);
+
+button_clear.addEventListener("click", clearHandler);
+button_equals.addEventListener("click", calculateHandler);
+
+//logz.addEventListener("click", () => {console.log(calc);});
