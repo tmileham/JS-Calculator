@@ -1,7 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 body {
+  background: #0f1a20;
   font-family: "Roboto", sans-serif;
+}
+
+h1 {
+  color: #f3ca40;
 }
 
 .center {
@@ -9,7 +14,7 @@ body {
 }
 
 #calculator {
-  background: blue;
+  background: #88a2aa;
   border: 1px solid black;
   border-radius: 8px;
   width: 340px;

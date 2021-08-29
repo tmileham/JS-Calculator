@@ -1,3 +1,6 @@
+// Need to work on quickcalculate feature, will allow calculate function
+// to be run on subsequent operation button presses
+
 const result = document.getElementById("result");
 const history = document.getElementById("history");
 
@@ -33,6 +36,7 @@ let calc = {
   prevNum: null,
   result: 0,
   operation: null,
+  operationSelected: false,
   operationText: "",
 };
 
@@ -52,7 +56,7 @@ const historyHandler = (textlength = "full") => {
 
 // TODO: Configure Regex to ensure only one decimal place can be added.
 const numberHandler = (num) => {
-  if (result.value === "0") {
+  if (result.value === "0" || calc.result !== 0) {
     result.value = num;
   } else {
     result.value = result.value + num;
@@ -85,7 +89,7 @@ const operationHandler = (operation) => {
   }
 
   result.value = 0;
-  if (calc.result === 0) {
+  if (calc.result === 0 && calc.operation) {
     calc.prevNum = calc.currentNum;
     historyHandler("full");
   } else {
@@ -107,7 +111,6 @@ const calculateHandler = () => {
   }
 
   result.value = calc.result;
-
   historyHandler("full");
   calc.prevNum = calc.result;
 };
@@ -118,6 +121,7 @@ const clearHandler = () => {
   calc.operation = null;
   calc.currentNum = null;
   calc.prevNum = null;
+  calc.operationSelected = null;
   history.value = "";
 };
 
@@ -144,6 +148,8 @@ button_multiply.addEventListener(
 );
 
 button_clear.addEventListener("click", clearHandler);
-button_equals.addEventListener("click", calculateHandler);
+button_equals.addEventListener("click", calculateHandler.bind(this, ""));
 
-//logz.addEventListener("click", () => {console.log(calc);});
+logz.addEventListener("click", () => {
+  console.log(calc);
+});
