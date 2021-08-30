@@ -67,3 +67,11 @@ h1 {
   width: 150px;
   margin: 5px 5px;
 }
+
+#comingsoon {
+  color: #ffffff;
+  width: 340px;
+  margin: 0 auto;
+  padding-top: 5px;
+  padding-bottom: 20px;
+}

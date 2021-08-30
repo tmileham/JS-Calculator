@@ -1,3 +1,19 @@
 # JS-Calculator
 
-A simple Javascript calculator to practice both logic and DOM manipulation.
+A simple calculator
+
+## Description
+
+A simple calculator created using HTML, CSS and Javascript.
+
+## Getting Started
+
+### Dependencies
+
+- No dependencies, the calculator is written in vanilla Javascript
+- It will run on any javascript enabled modern Web Browser
+
+## Authors
+
+Tom Mileham
+[@tomahawkzTV](https://twitter.com/tomahawkzTV)
