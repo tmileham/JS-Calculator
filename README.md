@@ -15,5 +15,5 @@ A simple calculator created using HTML, CSS and Javascript.
 
 ## Authors
 
-Tom Mileham
-[@tomahawkzTV](https://twitter.com/tomahawkzTV)
+Thomas Mileham
+
